@@ -1,0 +1,25 @@
+.modal-consulta{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    align-content: center;
+    width: 29rem;
+    height: 12rem;
+    gap: 1.5rem;
+    background: white;
+    border: 1px solid;
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+.modal-consulta button {
+    cursor: pointer;
+    align-self:center;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}

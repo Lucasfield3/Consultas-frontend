@@ -1,0 +1,23 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  color:#29292e;
+  height:100vh;
+}
+
+body, input, button, textarea {
+  font:400 16px 'Poppins', sans-serif;
+  outline: none;
+}
