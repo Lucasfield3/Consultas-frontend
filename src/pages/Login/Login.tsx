@@ -4,8 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { PageDefault } from '../../components/PageDefault/PageDefault';
 import { AuthContext } from '../../context/Auth/AuthContext';
-import { Credentials, FuncionarioAuthenticated } from '../../services/Authenticate';
-import { Inputs } from '../Register/Register';
+import { Credentials } from '../../services/Authenticate';
 import './style.css';
 
 
@@ -17,9 +16,11 @@ export function Login() {
   const { register, handleSubmit } = useForm<Credentials>()
 
   const onSubmit = async (data:Credentials) => {
-    const funcionario = signIn(data)
-    return console.log(funcionario);
-  
+    const funcionario = await signIn(data)
+    if(funcionario){
+      setTimeout(()=>navigate('/home'), 200)
+    }
+    
   }
 
 

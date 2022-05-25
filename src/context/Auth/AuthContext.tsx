@@ -39,7 +39,7 @@ export const AuthContext= createContext({} as AuthContextData)
 export const AuthContextProvider = ({children}: AuthContextProviderProps) =>{
 
 
-    const [ funcionario, setFuncionario ] = useState<FuncionarioAuthenticated>(recoveredFuncionario === null ? DEFAULT_FUNCIONARIO : recoveredFuncionario);
+    const [ funcionario, setFuncionario ] = useState<FuncionarioAuthenticated>(!recoveredFuncionario ? DEFAULT_FUNCIONARIO : recoveredFuncionario);
     const [ loading, setLoading ] = useState<boolean>(false)
     const navigate = useNavigate()
 
@@ -53,7 +53,6 @@ export const AuthContextProvider = ({children}: AuthContextProviderProps) =>{
             localStorage.setItem('funcionário', JSON.stringify(funcionarioRes))
             storeToken(funcionarioRes.jwtToken)
             setFuncionario(funcionarioRes)
-            navigate('/home')
             setLoading(false)
         }
 

@@ -30,7 +30,7 @@ function App() {
 
 
       if(!authenticated){
-        return <Navigate to='/login'/>
+        return <Navigate to='/'/>
       }
 
       if(loading){
@@ -45,7 +45,7 @@ function App() {
     <PacienteContextProvider>
     <ConsultaContextProvider>
       <Routes>
-        <Route element={<Login/>} path='/login'></Route>
+        <Route element={<Login/>} path='/'></Route>
         <Route element={<Register/>} path='/register'></Route>
         <Route element={<Private><Home/></Private>} path='/home'></Route>
         <Route element={ <Private><CreateConsultas/></Private>} path='/criacao'></Route>

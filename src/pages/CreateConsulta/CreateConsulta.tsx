@@ -1,20 +1,19 @@
-
-
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { BackButton } from '../../components/BackButton/BackButton';
 import { PageDefault } from '../../components/PageDefault/PageDefault';
 import { ConsultaContext } from '../../context/Consulta/ConsultaContext';
 import { PacienteContext } from '../../context/Paciente/PacienteContext';
-import { Consulta, NewConsulta } from '../../services/Consultas';
+import { NewConsulta } from '../../services/Consultas';
 import { Paciente } from '../../services/Pacientes';
 import './style.css';
+
 
 export function CreateConsultas() {
 
   const { registerPaciente, getAllPacientes } = useContext(PacienteContext)
-  const [ dateHour, setDateHour ] = useState('')
+
 
   const navigate = useNavigate()
 
@@ -22,7 +21,7 @@ export function CreateConsultas() {
 
   const { register, handleSubmit } = useForm<Paciente>()
 
-  const { register: register2, handleSubmit: handleSubmit2, getValues, setValue } = useForm<NewConsulta>()
+  const { register: register2, handleSubmit: handleSubmit2, getValues } = useForm<NewConsulta>()
 
   async function onSubmitPaciente(data: Paciente){
     const paciente = await registerPaciente(data)
@@ -30,6 +29,7 @@ export function CreateConsultas() {
     if(paciente){
       console.log(paciente);
     }
+   
   }
 
   async function onSubmitConsulta(){
@@ -50,6 +50,7 @@ export function CreateConsultas() {
       alert('Não se pode marcar nesse horaio')
         return
     }
+    alert('Consulta Criada')
       await registerConsulta({
         data:convertIso,
         pacienteNome:getValues('pacienteNome'),
@@ -60,9 +61,6 @@ export function CreateConsultas() {
     
   }
 
-
-  
-
   useEffect(()=>{
     getAllPacientes()
   }, [])
@@ -70,6 +68,7 @@ export function CreateConsultas() {
 
 
   return (
+    <>
      <PageDefault>
        <BackButton onClick={()=>navigate('/home')}/>
       <h1>Tela de criação</h1>
@@ -86,6 +85,8 @@ export function CreateConsultas() {
         <input {...register2("data", {required:true})} placeholder="telefone" type="datetime-local" />
         <button type='submit'>criar</button>
       </form>
+    
     </PageDefault>
+    </>
   );
 };

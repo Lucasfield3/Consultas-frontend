@@ -27,7 +27,6 @@ const navigate = useNavigate()
     async function getCurrentConsultaOnEdit(id:string){
       const currentConsulta = await getOneConsulta(id)
       if(currentConsulta){
-       // let convertedData = new Date(currentConsulta.data)
         reset({pacienteNome:currentConsulta.paciente?.nome!, 
           pacienteTel:currentConsulta.paciente?.telefone!,
           data:String(currentConsulta.data)

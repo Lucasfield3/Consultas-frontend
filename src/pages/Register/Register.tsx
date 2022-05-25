@@ -28,7 +28,7 @@ export function Register(props: Props) {
     console.log(funcionario);
     
     if(funcionario){
-        navigate('/login') 
+        navigate('/') 
     }
 }
 
@@ -42,7 +42,7 @@ export function Register(props: Props) {
           <button type="submit" >Registrar</button>
       </form>
 
-      <Link to='/login' ><p>Ja tem cadastro? se sim, clique aqui</p></Link>
+      <Link to='/' ><p>Ja tem cadastro? se sim, clique aqui</p></Link>
     </PageDefault>
   );
 };
