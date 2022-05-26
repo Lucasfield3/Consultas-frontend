@@ -6,6 +6,8 @@ import { BackButton } from '../../components/BackButton/BackButton';
 import { PageDefault } from '../../components/PageDefault/PageDefault';
 import { ConsultaContext } from '../../context/Consulta/ConsultaContext';
 import { NewConsulta } from '../../services/Consultas';
+import moment from 'moment'
+
 import './style.css';
 
 export function EditConsultas() {
@@ -27,9 +29,10 @@ const navigate = useNavigate()
     async function getCurrentConsultaOnEdit(){
       const currentConsulta = await getOneConsulta(id!)
       if(currentConsulta){
+        let dateFormated = moment(currentConsulta.data).format('YYYY-MM-DDTHH:mm:ss.sssZ').substring(0, 16)
         reset({pacienteNome:currentConsulta.paciente?.nome!, 
           pacienteTel:currentConsulta.paciente?.telefone!,
-          data:String(currentConsulta.data)
+          data:dateFormated
         })
         return currentConsulta
       }
@@ -63,6 +66,8 @@ const navigate = useNavigate()
       })
     
   }
+console.log(getValues('data'));
+
 
   return (
     <>
@@ -73,7 +78,7 @@ const navigate = useNavigate()
       <form onSubmit={handleSubmit(onSubmit)} className='form-edit'>
         <input {...register("pacienteTel" , {required:true})} placeholder='telefone do paciente' type="text" />
         <input {...register("pacienteNome" , {required:true})} placeholder='nome do paciente' type="text" />
-        <input {...register("data", {required:true})} placeholder="telefone" type="datetime-local" />
+        <input {...register("data", {required:true})}  placeholder="telefone" type="datetime-local" />
         <button type='submit' >Editar</button>
       </form>
     </PageDefault> : <h1>Loading</h1>
