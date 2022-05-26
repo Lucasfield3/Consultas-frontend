@@ -1,9 +1,9 @@
 
-import { createContext, ReactNode, useState } from 'react'
+import { createContext, ReactNode, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Credentials, FuncionarioAuthenticated, login, storeToken } from '../../services/Authenticate'
+import { Credentials, FuncionarioAuthenticated, getPayload, getToken, login, storeToken } from '../../services/Authenticate'
 
-let DEFAULT_FUNCIONARIO = {
+export let DEFAULT_FUNCIONARIO = {
     jwtToken:'', 
     name: '',
     senha: '',
@@ -23,7 +23,7 @@ if(storageItem){
 
 export type AuthContextData = {
     signIn: (data: Credentials) => Promise<FuncionarioAuthenticated | any> ;
-    funcionario:FuncionarioAuthenticated | undefined;
+    funcionario:FuncionarioAuthenticated;
     authenticated:boolean;
     loading:boolean;
 }
@@ -41,29 +41,40 @@ export const AuthContextProvider = ({children}: AuthContextProviderProps) =>{
 
     const [ funcionario, setFuncionario ] = useState<FuncionarioAuthenticated>(!recoveredFuncionario ? DEFAULT_FUNCIONARIO : recoveredFuncionario);
     const [ loading, setLoading ] = useState<boolean>(false)
-    const navigate = useNavigate()
 
+    let storeFuncionario:FuncionarioAuthenticated | null;
     const signIn = async(data: Credentials):Promise<FuncionarioAuthenticated| any>=>{
         setLoading(true)
-        console.log(data);
         const response =  await login(data)
         const funcionarioRes = response.data as FuncionarioAuthenticated | any
 
         if(funcionarioRes){
             localStorage.setItem('funcionário', JSON.stringify(funcionarioRes))
+            storeFuncionario = JSON.parse(localStorage.getItem('funcionário')!)
             storeToken(funcionarioRes.jwtToken)
-            setFuncionario(funcionarioRes)
             setLoading(false)
         }
 
+        console.log(funcionario);
+        
         return funcionarioRes
        
     }
 
+    useEffect(() => {
+  
+        if(storeFuncionario){
+            setFuncionario(prevstate => { return {...prevstate,...storeFuncionario}});
+            console.log(storeFuncionario);
+            
+        }
+      }, [storeFuncionario!]);
+    
+
     
 
      return(
-          <AuthContext.Provider value={{loading ,signIn, funcionario, authenticated:(funcionario === DEFAULT_FUNCIONARIO ? false : true)}}>
+          <AuthContext.Provider value={{loading ,signIn, funcionario, authenticated:(!getPayload() ? false : true)}}>
                {children}
           </AuthContext.Provider>
      )

@@ -37,10 +37,7 @@ export const PacienteContextProvider = ({children}: PacienteContextProviderProps
 
     
 
-    useEffect(()=>{
-        getAllPacientes()
-        console.log(pacientes);
-    }, [])
+   
 
      return(
           <PacienteContext.Provider value={{getAllPacientes ,registerPaciente, pacientes}}>

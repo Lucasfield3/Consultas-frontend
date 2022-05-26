@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ConsultaContext, DEFAULT_CONSULTAS } from '../../context/Consulta/ConsultaContext';
+import { ConsultaContext } from '../../context/Consulta/ConsultaContext';
 import { Overlay } from '../Overlay/Overlay';
 import { ViewConsulta } from '../ViewConsulta/ViewConsulta';
 import './style.css'
@@ -21,7 +21,7 @@ export function ListaDeConsultas(props: Props) {
 
     const navigate = useNavigate()
 
-    let arrayFiltered = consultas.filter((consulta)=>{
+    let arrayFiltered = consultas!.filter((consulta)=>{
       if(consultas){
         return consulta.paciente?.nome.toLocaleLowerCase().indexOf(props.searchText.toLocaleLowerCase()) !== -1 || 
         String(consulta.data).toLocaleLowerCase().indexOf(props.searchText.toLocaleLowerCase()) !== -1;
@@ -44,7 +44,7 @@ export function ListaDeConsultas(props: Props) {
       <Overlay onClick={()=>setToggle(false)} isShown={toggle}/>
        <ViewConsulta  onClick={()=>setToggle(false)} toggle={toggle}/>
       <div className="scroll-area">
-        {consultas !== DEFAULT_CONSULTAS && arrayFiltered.map((consulta, index)=>{
+        {arrayFiltered.map((consulta, index)=>{
           return (
             <>
               <div onClick={()=>getCurrentConsulta(consulta.id!)}  key={consulta.id} className="consulta">

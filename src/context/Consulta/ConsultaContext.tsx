@@ -11,34 +11,21 @@ type ConsultaContextData = {
     consultas:Consulta[];
     consulta:Consulta | undefined;
     formatDate:(value:Date)=>string;
+    loading:boolean;
 }
 
 type ConsultaContextProviderProps = {
      children: ReactNode
 }
 
-const DEFAULT_PACIENTE = {
-    id:'',
-    nome:'',
-    telefone:''
-} as Paciente
-
-
-export const  DEFAULT_CONSULTAS:Consulta[] = [
-    {
-        id:'',
-        data:new Date(),
-        pacienteId:'',
-        paciente:DEFAULT_PACIENTE,
-    } 
-]
 
 export const ConsultaContext = createContext({} as ConsultaContextData)
 
 export const ConsultaContextProvider = ({children}: ConsultaContextProviderProps) =>{
 
-    const [ consultas, setConsultas ] = useState<Consulta[]>(DEFAULT_CONSULTAS)
+    const [ consultas, setConsultas ] = useState<Consulta[]>([])
     const [ consulta, setConsulta ] = useState<Consulta>()
+    const [ loading, setLoading ] = useState(false)
 
     async function registerConsulta(data: NewConsulta):Promise<Consulta> {
         const response = await createConsulta(data)
@@ -49,10 +36,12 @@ export const ConsultaContextProvider = ({children}: ConsultaContextProviderProps
     }
 
     async function getAllConsultas():Promise<Consulta[]> {
+        setLoading(true)
         const response = await getConsultas()
         if(response){
             console.log(response);
             setConsultas(response)
+            setLoading(false)
         }
         return response
     }
@@ -97,12 +86,9 @@ export const ConsultaContextProvider = ({children}: ConsultaContextProviderProps
      }
 
 
-    useEffect(()=>{
-        getAllConsultas()
-    }, [])
 
      return(
-          <ConsultaContext.Provider value={{formatDate ,editOneConsulta ,removeOneConsulta ,consulta ,getOneConsulta ,getAllConsultas, registerConsulta, consultas}}>
+          <ConsultaContext.Provider value={{loading, formatDate ,editOneConsulta ,removeOneConsulta ,consulta ,getOneConsulta ,getAllConsultas, registerConsulta, consultas}}>
                {children}
           </ConsultaContext.Provider>
      )

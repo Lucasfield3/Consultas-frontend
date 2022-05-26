@@ -21,3 +21,10 @@ body, input, button, textarea {
   font:400 16px 'Poppins', sans-serif;
   outline: none;
 }
+
+h3{
+  display: flex;
+  align-self: center;
+  height: 100%;
+  line-height: 17rem;
+}

@@ -3,22 +3,24 @@ import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { PageDefault } from '../../components/PageDefault/PageDefault';
-import { AuthContext } from '../../context/Auth/AuthContext';
-import { Credentials } from '../../services/Authenticate';
+import { AuthContext, DEFAULT_FUNCIONARIO } from '../../context/Auth/AuthContext';
+import { Credentials, FuncionarioAuthenticated } from '../../services/Authenticate';
 import './style.css';
 
 
 export function Login() {
-  const { signIn } = useContext(AuthContext)
+  const { signIn, funcionario } = useContext(AuthContext)
 
   const navigate = useNavigate()
 
   const { register, handleSubmit } = useForm<Credentials>()
 
   const onSubmit = async (data:Credentials) => {
-    const funcionario = await signIn(data)
-    if(funcionario){
-      setTimeout(()=>navigate('/home'), 200)
+    const funcionarioRes = await signIn(data) as FuncionarioAuthenticated
+    if(funcionarioRes){
+      if(funcionario !== DEFAULT_FUNCIONARIO){
+        setTimeout(()=>navigate('/home'), 600)
+      }
     }
     
   }
