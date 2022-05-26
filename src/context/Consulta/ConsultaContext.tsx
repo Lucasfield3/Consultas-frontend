@@ -70,6 +70,7 @@ export const ConsultaContextProvider = ({children}: ConsultaContextProviderProps
             if(getToken()){
                 await api.delete<Consulta>(`consultas/${id}`, 
                 { headers: {"Authorization" : `Bearer ${getToken()}`}})
+                getAllConsultas()
             }
         
     }
