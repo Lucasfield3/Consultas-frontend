@@ -24,8 +24,8 @@ const navigate = useNavigate()
   const { id } = useParams()
 
   useEffect(()=>{
-    async function getCurrentConsultaOnEdit(id:string){
-      const currentConsulta = await getOneConsulta(id)
+    async function getCurrentConsultaOnEdit(){
+      const currentConsulta = await getOneConsulta(id!)
       if(currentConsulta){
         reset({pacienteNome:currentConsulta.paciente?.nome!, 
           pacienteTel:currentConsulta.paciente?.telefone!,
@@ -34,7 +34,7 @@ const navigate = useNavigate()
         return currentConsulta
       }
     }
-    getCurrentConsultaOnEdit(id!)
+    getCurrentConsultaOnEdit()
   }, [])
 
   async function onSubmit(){
@@ -66,6 +66,8 @@ const navigate = useNavigate()
   }
 
   return (
+    <>
+    {consulta ? 
     <PageDefault>
       <BackButton onClick={()=>navigate('/home')}/>
       <h1>Tela de edição</h1>
@@ -75,6 +77,9 @@ const navigate = useNavigate()
         <input {...register("data", {required:true})} placeholder="telefone" type="datetime-local" />
         <button type='submit' >Editar</button>
       </form>
-    </PageDefault>
+    </PageDefault> : <h1>Loading</h1>
+    
+    }
+    </>
   );
 };

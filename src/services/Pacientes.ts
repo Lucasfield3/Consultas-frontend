@@ -1,4 +1,4 @@
-import { Consulta } from "./Consultas";
+
 import api from "./utils/api";
 
 export type Paciente = {

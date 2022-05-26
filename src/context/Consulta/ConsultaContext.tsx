@@ -1,7 +1,8 @@
-import { createContext, useContext, ReactNode, useState, useEffect } from 'react'
-import { Consulta, createConsulta, editConsulta, getConsulta, getConsultas, NewConsulta, removeConsulta } from '../../services/Consultas'
-import { Paciente } from '../../services/Pacientes';
-import { AuthContext, DEFAULT_FUNCIONARIO } from '../Auth/AuthContext';
+import { createContext, ReactNode, useState } from 'react'
+import { getToken } from '../../services/Authenticate';
+import { Consulta, createConsulta, editConsulta, getConsulta, NewConsulta, removeConsulta } from '../../services/Consultas'
+
+import api from '../../services/utils/api';
 
 type ConsultaContextData = {
     registerConsulta:(data: NewConsulta)=>Promise<Consulta>;
@@ -12,7 +13,6 @@ type ConsultaContextData = {
     consultas:Consulta[];
     consulta:Consulta | undefined;
     formatDate:(value:Date)=>string;
-    loading:boolean;
 }
 
 type ConsultaContextProviderProps = {
@@ -24,30 +24,36 @@ export const ConsultaContext = createContext({} as ConsultaContextData)
 
 export const ConsultaContextProvider = ({children}: ConsultaContextProviderProps) =>{
 
-    const { funcionario } = useContext(AuthContext)
-
     const [ consultas, setConsultas ] = useState<Consulta[]>([])
     const [ consulta, setConsulta ] = useState<Consulta>()
-    const [ loading, setLoading ] = useState(false)
 
-    async function registerConsulta(data: NewConsulta):Promise<Consulta> {
-        const response = await createConsulta(data)
-        if(response){
-            console.log(response);
+    async function registerConsulta(newConsulta: NewConsulta):Promise<Consulta | any> {
+        try {
+            if(getToken()){
+                const {data} = await api.post<Consulta[]>('/consultas', newConsulta, 
+                { headers: {"Authorization" : `Bearer ${getToken()}`}})
+                console.log(data)
+            }
+        } catch (error) {
+            console.log(error);
+            
         }
-        return response
     }
 
-    async function getAllConsultas():Promise<Consulta[] | any> {
-        setLoading(true)
-              await getConsultas(funcionario)
-                .then(async(data:Consulta[]) =>{
-                    console.log(data);
-                    setConsultas(data)
-                })
-            setLoading(false)
-        
+    async function getAllConsultas(): Promise<Consulta[] | any>{
+
+        try {
+            if(getToken()){
+                const {data} = await api.get<Consulta[]>('/consultas', 
+                { headers: {"Authorization" : `Bearer ${getToken()}`}})
+                setConsultas(data)
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
     }
+    
 
     
     async function getOneConsulta(id:string):Promise<Consulta> {
@@ -59,20 +65,26 @@ export const ConsultaContextProvider = ({children}: ConsultaContextProviderProps
         return response
     }
 
-    async function removeOneConsulta(id:string):Promise<Consulta> {
-        const response = await removeConsulta(id)
-        if(response){
-             await getAllConsultas()
-        }
-        return response
+    async function removeOneConsulta(id:string):Promise<Consulta | any> {
+        
+            if(getToken()){
+                await api.delete<Consulta>(`consultas/${id}`, 
+                { headers: {"Authorization" : `Bearer ${getToken()}`}})
+            }
+        
     }
 
-    async function editOneConsulta(id:string, data:NewConsulta):Promise<Consulta> {
-        const response = await editConsulta(id, data)
-        if(response){
-             await getAllConsultas()
+    async function editOneConsulta(id:string, newConsulta:NewConsulta):Promise<Consulta | any> {
+        try {
+            if(getToken()){
+                const {data} = await api.patch<Consulta>(`consultas/${id}`, newConsulta , 
+                { headers: {"Authorization" : `Bearer ${getToken()}`}})
+                console.log(data);
+            }
+        } catch (error) {
+            console.log(error);
+            
         }
-        return response
     }
 
     const formatDate = (value:Date)=>{
@@ -91,7 +103,7 @@ export const ConsultaContextProvider = ({children}: ConsultaContextProviderProps
 
 
      return(
-          <ConsultaContext.Provider value={{loading, formatDate ,editOneConsulta ,removeOneConsulta ,consulta ,getOneConsulta ,getAllConsultas, registerConsulta, consultas}}>
+          <ConsultaContext.Provider value={{formatDate ,editOneConsulta ,removeOneConsulta ,consulta ,getOneConsulta ,getAllConsultas, registerConsulta, consultas}}>
                {children}
           </ConsultaContext.Provider>
      )

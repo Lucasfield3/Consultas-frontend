@@ -1,5 +1,5 @@
 import { DEFAULT_FUNCIONARIO } from "../context/Auth/AuthContext";
-import { FuncionarioAuthenticated } from "./Authenticate";
+import { FuncionarioAuthenticated, getToken } from "./Authenticate";
 import { Paciente } from "./Pacientes";
 import api from "./utils/api";
 
@@ -31,7 +31,8 @@ export async function createConsulta(data:NewConsulta):Promise<Consulta>{
 export async function getConsulta(id:string): Promise<Consulta>{
     
     return await api
-        .get<Consulta>(`/consultas/${id}`,)
+        .get<Consulta>(`/consultas/${id}`,
+        { headers: {"Authorization" : `Bearer ${getToken()}`}})
         .then(async(res)=> {
             return res.data
         })

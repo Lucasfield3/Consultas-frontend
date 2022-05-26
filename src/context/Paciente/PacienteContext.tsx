@@ -1,5 +1,7 @@
 import { createContext, useContext, ReactNode, useState, useEffect } from 'react'
+import { getToken } from '../../services/Authenticate';
 import { createPaciente, getPacientes, Paciente } from '../../services/Pacientes'
+import api from '../../services/utils/api';
 
 type PacienteContextData = {
     registerPaciente: (data: Paciente) => Promise<Paciente | any> ;
@@ -27,17 +29,17 @@ export const PacienteContextProvider = ({children}: PacienteContextProviderProps
     }
 
     async function getAllPacientes():Promise<Paciente[] | any>{
-        const response = await getPacientes()
-        const pacienteRes = response.data as Paciente[]
-
-        if(pacienteRes){
-            setPacientes(pacienteRes)
+        try {
+            if(getToken()){
+                const {data} = await api.get<Paciente[]>('/pacientes', 
+                { headers: {"Authorization" : `Bearer ${getToken()}`}})
+                setPacientes(data)
+            }
+        } catch (error) {
+            console.log(error);
+            
         }
-    }
-
-    
-
-   
+    }   
 
      return(
           <PacienteContext.Provider value={{getAllPacientes ,registerPaciente, pacientes}}>

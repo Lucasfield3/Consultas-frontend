@@ -15,10 +15,6 @@ export function ListaDeConsultas(props: Props) {
 
   const [  toggle, setToggle ] = useState(false)
 
-  useEffect(()=>{
-    getAllConsultas()
-  }, [])
-
     const navigate = useNavigate()
 
     let arrayFiltered = consultas!.filter((consulta)=>{
@@ -29,11 +25,8 @@ export function ListaDeConsultas(props: Props) {
     })
 
     async function getCurrentConsulta(id:string){
-      const currentConsulta = await getOneConsulta(id)
-      if(currentConsulta){
-        setToggle(true)
-        return currentConsulta
-      }
+       await getOneConsulta(id)
+       setToggle(true)
     }
 
     

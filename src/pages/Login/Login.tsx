@@ -9,19 +9,18 @@ import './style.css';
 
 
 export function Login() {
-  const { signIn, funcionario } = useContext(AuthContext)
+  const { login, funcionario } = useContext(AuthContext)
 
   const navigate = useNavigate()
 
   const { register, handleSubmit } = useForm<Credentials>()
 
   const onSubmit = async (data:Credentials) => {
-    const funcionarioRes = await signIn(data) as FuncionarioAuthenticated
-    if(funcionarioRes){
-      if(funcionario !== DEFAULT_FUNCIONARIO){
-        setTimeout(()=>navigate('/home'), 600)
-      }
-    }
+    await login(data) as FuncionarioAuthenticated
+      
+    setTimeout(()=>navigate('/home'), 1000)
+      
+    
     
   }
 

@@ -3,11 +3,8 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ListaDeConsultas } from '../../components/ListaDeConsultas/ListaDeConsultas';
 import { PageDefault } from '../../components/PageDefault/PageDefault';
-import { AuthContext, DEFAULT_FUNCIONARIO } from '../../context/Auth/AuthContext';
+import { AuthContext } from '../../context/Auth/AuthContext';
 import { ConsultaContext } from '../../context/Consulta/ConsultaContext';
-import { PacienteContext } from '../../context/Paciente/PacienteContext';
-import { FuncionarioAuthenticated, getPayload } from '../../services/Authenticate';
-import { getFuncionario } from '../../services/Funcionario';
 import './style.css';
 
 export function Home() {
@@ -15,12 +12,11 @@ export function Home() {
   const navigate = useNavigate()
 const [ searchText, setSearchText ] = useState('')
 const { getAllConsultas } = useContext(ConsultaContext)
-const { loading, funcionario } = useContext(AuthContext)
-const { getAllPacientes } = useContext(PacienteContext)
+const { loading } = useContext(AuthContext)
 
  
 useEffect(() => {
-      getAllConsultas()
+  getAllConsultas()
 }, [])
   
   return (
