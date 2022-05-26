@@ -3,25 +3,22 @@ import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { PageDefault } from '../../components/PageDefault/PageDefault';
-import { AuthContext, DEFAULT_FUNCIONARIO } from '../../context/Auth/AuthContext';
+import { AuthContext } from '../../context/Auth/AuthContext';
 import { Credentials, FuncionarioAuthenticated } from '../../services/Authenticate';
 import './style.css';
 
 
 export function Login() {
-  const { login, funcionario } = useContext(AuthContext)
-
-  const navigate = useNavigate()
-
+  const { login } = useContext(AuthContext)
   const { register, handleSubmit } = useForm<Credentials>()
 
   const onSubmit = async (data:Credentials) => {
-    await login(data) as FuncionarioAuthenticated
-      
-    setTimeout(()=>navigate('/home'), 1000)
-      
-    
-    
+
+    try {
+       await login(data) as FuncionarioAuthenticated
+    } catch (error) {
+      console.log(error);
+    }
   }
 
 
