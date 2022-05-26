@@ -22,7 +22,7 @@ body, input, button, textarea {
   outline: none;
 }
 
-h3{
+h2{
   display: flex;
   align-self: center;
   height: 100%;

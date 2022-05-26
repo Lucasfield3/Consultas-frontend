@@ -66,7 +66,7 @@ export function ListaDeConsultas(props: Props) {
             </>
           )
         })}
-        { arrayFiltered.length === 0  && <h3 className='empty'>vazio</h3>}
+        { arrayFiltered.length === 0  && <h2 className='empty'>vazio</h2>}
       </div>
     </>
   );

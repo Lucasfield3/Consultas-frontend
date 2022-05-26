@@ -1,7 +1,9 @@
 
-import { createContext, ReactNode, useEffect, useState } from 'react'
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Credentials, FuncionarioAuthenticated, getPayload, getToken, login, storeToken } from '../../services/Authenticate'
+import api from '../../services/utils/api'
+import { ConsultaContext } from '../Consulta/ConsultaContext'
 
 export let DEFAULT_FUNCIONARIO = {
     jwtToken:'', 
@@ -38,7 +40,7 @@ export const AuthContext= createContext({} as AuthContextData)
 
 export const AuthContextProvider = ({children}: AuthContextProviderProps) =>{
 
-
+    const { getAllConsultas } = useContext(ConsultaContext)
     const [ funcionario, setFuncionario ] = useState<FuncionarioAuthenticated>(!recoveredFuncionario ? DEFAULT_FUNCIONARIO : recoveredFuncionario);
     const [ loading, setLoading ] = useState<boolean>(false)
 
@@ -52,29 +54,44 @@ export const AuthContextProvider = ({children}: AuthContextProviderProps) =>{
             localStorage.setItem('funcionário', JSON.stringify(funcionarioRes))
             storeFuncionario = JSON.parse(localStorage.getItem('funcionário')!)
             storeToken(funcionarioRes.jwtToken)
-            setLoading(false)
+            handleAwaitConsultas()
         }
 
+        setLoading(false)
         console.log(funcionario);
         
         return funcionarioRes
        
     }
 
-    useEffect(() => {
+    const storageItem = localStorage.getItem('funcionário')
+
+    async function handleAwaitConsultas(): Promise<FuncionarioAuthenticated>{
   
-        if(storeFuncionario){
-            setFuncionario(prevstate => { return {...prevstate,...storeFuncionario}});
-            console.log(storeFuncionario);
-            
+        const {data} = await api.get<FuncionarioAuthenticated>(`/funcionarios/${getPayload()?.funcionarioId!}`)
+    
+        console.log(data);
+        if(data){
+            setFuncionario(data)
         }
-      }, [storeFuncionario!]);
+        return data
+    }
+
+    
+
+    // useEffect(() => {
+  
+        
+    //     setFuncionario(JSON.parse(storageItem!));
+    //     console.log(storageItem);
+        
+    //   }, [storageItem!]);
     
 
     
 
      return(
-          <AuthContext.Provider value={{loading ,signIn, funcionario, authenticated:(!getPayload() ? false : true)}}>
+          <AuthContext.Provider value={{ loading ,signIn, funcionario, authenticated:(!getPayload() ? false : true)}}>
                {children}
           </AuthContext.Provider>
      )

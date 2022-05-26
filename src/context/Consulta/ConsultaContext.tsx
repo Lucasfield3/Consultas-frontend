@@ -1,6 +1,7 @@
 import { createContext, useContext, ReactNode, useState, useEffect } from 'react'
 import { Consulta, createConsulta, editConsulta, getConsulta, getConsultas, NewConsulta, removeConsulta } from '../../services/Consultas'
 import { Paciente } from '../../services/Pacientes';
+import { AuthContext, DEFAULT_FUNCIONARIO } from '../Auth/AuthContext';
 
 type ConsultaContextData = {
     registerConsulta:(data: NewConsulta)=>Promise<Consulta>;
@@ -23,6 +24,8 @@ export const ConsultaContext = createContext({} as ConsultaContextData)
 
 export const ConsultaContextProvider = ({children}: ConsultaContextProviderProps) =>{
 
+    const { funcionario } = useContext(AuthContext)
+
     const [ consultas, setConsultas ] = useState<Consulta[]>([])
     const [ consulta, setConsulta ] = useState<Consulta>()
     const [ loading, setLoading ] = useState(false)
@@ -35,15 +38,15 @@ export const ConsultaContextProvider = ({children}: ConsultaContextProviderProps
         return response
     }
 
-    async function getAllConsultas():Promise<Consulta[]> {
+    async function getAllConsultas():Promise<Consulta[] | any> {
         setLoading(true)
-        const response = await getConsultas()
-        if(response){
-            console.log(response);
-            setConsultas(response)
+              await getConsultas(funcionario)
+                .then(async(data:Consulta[]) =>{
+                    console.log(data);
+                    setConsultas(data)
+                })
             setLoading(false)
-        }
-        return response
+        
     }
 
     

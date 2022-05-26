@@ -6,6 +6,8 @@ import { PageDefault } from '../../components/PageDefault/PageDefault';
 import { AuthContext, DEFAULT_FUNCIONARIO } from '../../context/Auth/AuthContext';
 import { ConsultaContext } from '../../context/Consulta/ConsultaContext';
 import { PacienteContext } from '../../context/Paciente/PacienteContext';
+import { FuncionarioAuthenticated, getPayload } from '../../services/Authenticate';
+import { getFuncionario } from '../../services/Funcionario';
 import './style.css';
 
 export function Home() {
@@ -15,19 +17,15 @@ const [ searchText, setSearchText ] = useState('')
 const { getAllConsultas } = useContext(ConsultaContext)
 const { loading, funcionario } = useContext(AuthContext)
 const { getAllPacientes } = useContext(PacienteContext)
+
  
 useEffect(() => {
-  console.log(funcionario);
-  
-  if(!loading){
-    getAllConsultas()
-    getAllPacientes()
-  }
+      getAllConsultas()
 }, [])
   
   return (
     <>
-    {loading  ? <h3>Loading...</h3> :
+    {loading  ? <h2>Loading...</h2> :
     <PageDefault>
       <h1>Lista de consultas</h1>
       <div className="container-consultas">
