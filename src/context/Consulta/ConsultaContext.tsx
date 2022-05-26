@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useState } from 'react'
 import { getToken } from '../../services/Authenticate';
-import { Consulta, createConsulta, editConsulta, getConsulta, NewConsulta, removeConsulta } from '../../services/Consultas'
+import { Consulta, getConsulta, NewConsulta } from '../../services/Consultas'
 
 import api from '../../services/utils/api';
 

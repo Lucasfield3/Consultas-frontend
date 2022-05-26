@@ -1,6 +1,6 @@
-import { createContext, useContext, ReactNode, useState, useEffect } from 'react'
+import { createContext, ReactNode, useState } from 'react'
 import { getToken } from '../../services/Authenticate';
-import { createPaciente, getPacientes, Paciente } from '../../services/Pacientes'
+import { createPaciente, Paciente } from '../../services/Pacientes'
 import api from '../../services/utils/api';
 
 type PacienteContextData = {

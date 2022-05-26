@@ -44,16 +44,15 @@ const navigate = useNavigate()
     let hours = formatedDate.getHours()
     let minutes = formatedDate.getMinutes()
     console.log(convertIso);
-    if(hours >= 17 || hours <= 8){
-      if(minutes > 0){
-        alert('Não se pode marcar nesse horaio')
-        return
-      }
+    if(hours < 8 ||( hours >= 17 && minutes >= 0)){
+      console.log(hours, minutes);
+      alert('Não se pode marcar nesse horaio')
+      return
     } 
     
     if(formatedDate < today){
       alert('Não se pode marcar nesse horaio')
-        return
+      return
     }
       await editOneConsulta(consulta!.id! ,{
         data:convertIso,
