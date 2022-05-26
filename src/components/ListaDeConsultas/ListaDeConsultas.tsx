@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ConsultaContext } from '../../context/Consulta/ConsultaContext';
+import { ConsultaContext, DEFAULT_CONSULTAS } from '../../context/Consulta/ConsultaContext';
 import { Overlay } from '../Overlay/Overlay';
 import { ViewConsulta } from '../ViewConsulta/ViewConsulta';
 import './style.css'
@@ -44,7 +44,7 @@ export function ListaDeConsultas(props: Props) {
       <Overlay onClick={()=>setToggle(false)} isShown={toggle}/>
        <ViewConsulta  onClick={()=>setToggle(false)} toggle={toggle}/>
       <div className="scroll-area">
-        {arrayFiltered.map((consulta, index)=>{
+        {consultas !== DEFAULT_CONSULTAS && arrayFiltered.map((consulta, index)=>{
           return (
             <>
               <div onClick={()=>getCurrentConsulta(consulta.id!)}  key={consulta.id} className="consulta">
@@ -66,7 +66,7 @@ export function ListaDeConsultas(props: Props) {
             </>
           )
         })}
-
+        { arrayFiltered.length === 0  && <h3 className='empty'>vazio</h3>}
       </div>
     </>
   );

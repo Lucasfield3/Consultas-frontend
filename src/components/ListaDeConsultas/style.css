@@ -39,3 +39,9 @@
 .buttons > button{
     cursor: pointer;
 }
+.empty{
+    display: flex;
+    align-self: center;
+    height: 100%;
+    line-height: 17rem;
+}

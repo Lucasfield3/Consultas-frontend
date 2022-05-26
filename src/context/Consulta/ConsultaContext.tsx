@@ -1,5 +1,6 @@
 import { createContext, useContext, ReactNode, useState, useEffect } from 'react'
 import { Consulta, createConsulta, editConsulta, getConsulta, getConsultas, NewConsulta, removeConsulta } from '../../services/Consultas'
+import { Paciente } from '../../services/Pacientes';
 
 type ConsultaContextData = {
     registerConsulta:(data: NewConsulta)=>Promise<Consulta>;
@@ -16,11 +17,27 @@ type ConsultaContextProviderProps = {
      children: ReactNode
 }
 
+const DEFAULT_PACIENTE = {
+    id:'',
+    nome:'',
+    telefone:''
+} as Paciente
+
+
+export const  DEFAULT_CONSULTAS:Consulta[] = [
+    {
+        id:'',
+        data:new Date(),
+        pacienteId:'',
+        paciente:DEFAULT_PACIENTE,
+    } 
+]
+
 export const ConsultaContext = createContext({} as ConsultaContextData)
 
 export const ConsultaContextProvider = ({children}: ConsultaContextProviderProps) =>{
 
-    const [ consultas, setConsultas ] = useState<Consulta[]>([])
+    const [ consultas, setConsultas ] = useState<Consulta[]>(DEFAULT_CONSULTAS)
     const [ consulta, setConsulta ] = useState<Consulta>()
 
     async function registerConsulta(data: NewConsulta):Promise<Consulta> {
