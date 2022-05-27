@@ -17,6 +17,7 @@ export function Login() {
       alert('senha de acesso incorreta')
       return
     }
+
     try {
        await login(data) as FuncionarioAuthenticated
     } catch (error) {
