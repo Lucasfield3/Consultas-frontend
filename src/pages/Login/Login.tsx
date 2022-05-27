@@ -13,7 +13,10 @@ export function Login() {
   const { register, handleSubmit } = useForm<Credentials>()
 
   const onSubmit = async (data:Credentials) => {
-
+    if(data.hash_senha !== import.meta.env.VITE_SENHA_FUNCIONARIO ){
+      alert('senha de acesso incorreta')
+      return
+    }
     try {
        await login(data) as FuncionarioAuthenticated
     } catch (error) {
