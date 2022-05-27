@@ -1,4 +1,4 @@
-
+import env from "react-dotenv";
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
@@ -24,6 +24,12 @@ export function Register(props: Props) {
   const { register, handleSubmit } = useForm<Credentials>()
 
   const onSubmit = async (data:Credentials) => {
+    console.log(import.meta.env.VITE_SENHA_FUNCIONARIO);
+    
+    if(data.hash_senha !== import.meta.env.VITE_SENHA_FUNCIONARIO ){
+      alert('senha de acesso incorreta')
+      return
+    }
     const funcionario = await signUp(data)
     console.log(funcionario);
     
