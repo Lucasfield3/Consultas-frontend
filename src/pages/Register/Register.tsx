@@ -30,12 +30,12 @@ export function Register(props: Props) {
       alert('senha de acesso incorreta')
       return
     }
-    // const funcionario = await signUp(data)
-    // console.log(funcionario);
+    const funcionario = await signUp(data)
+    console.log(funcionario);
     
-    // if(funcionario){
-    //     navigate('/') 
-    // }
+    if(funcionario){
+        navigate('/') 
+    }
 }
 
 
