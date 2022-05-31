@@ -22,7 +22,8 @@ export interface NewConsulta {
 export async function getConsulta(id:string): Promise<Consulta>{
     
     return await api
-        .get<Consulta>(`/consultas/${id}`)
+        .get<Consulta>(`/consultas/${id}`,
+        { headers: {"Authorization" : `Bearer ${getToken()}`}})
         .then(async(res)=> {
             return res.data
         })

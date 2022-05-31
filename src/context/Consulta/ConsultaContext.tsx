@@ -30,8 +30,8 @@ export const ConsultaContextProvider = ({children}: ConsultaContextProviderProps
     async function registerConsulta(newConsulta: NewConsulta):Promise<Consulta | any> {
         try {
             if(getToken()){
-                const {data} = await api.post<Consulta[]>('/consultas', newConsulta) 
-    
+                const {data} = await api.post<Consulta[]>('/consultas', newConsulta, 
+                { headers: {"Authorization" : `Bearer ${getToken()}`}})
                 console.log(data)
             }
         } catch (error) {
@@ -44,7 +44,8 @@ export const ConsultaContextProvider = ({children}: ConsultaContextProviderProps
 
         try {
             if(getToken()){
-                const {data} = await api.get<Consulta[]>('/consultas')
+                const {data} = await api.get<Consulta[]>('/consultas', 
+                { headers: {"Authorization" : `Bearer ${getToken()}`}})
                 setConsultas(data)
             }
         } catch (error) {
@@ -67,8 +68,8 @@ export const ConsultaContextProvider = ({children}: ConsultaContextProviderProps
     async function removeOneConsulta(id:string):Promise<Consulta | any> {
         
             if(getToken()){
-                await api.delete<Consulta>(`consultas/${id}`) 
-    
+                await api.delete<Consulta>(`consultas/${id}`, 
+                { headers: {"Authorization" : `Bearer ${getToken()}`}})
                 getAllConsultas()
             }
         
@@ -77,8 +78,8 @@ export const ConsultaContextProvider = ({children}: ConsultaContextProviderProps
     async function editOneConsulta(id:string, newConsulta:NewConsulta):Promise<Consulta | any> {
         try {
             if(getToken()){
-                const {data} = await api.patch<Consulta>(`consultas/${id}`, newConsulta) 
-    
+                const {data} = await api.patch<Consulta>(`consultas/${id}`, newConsulta , 
+                { headers: {"Authorization" : `Bearer ${getToken()}`}})
                 console.log(data);
             }
         } catch (error) {

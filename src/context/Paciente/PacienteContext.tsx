@@ -31,7 +31,8 @@ export const PacienteContextProvider = ({ children }: PacienteContextProviderPro
     async function getAllPacientes(): Promise<Paciente[] | any> {
         try {
             if (getToken()) {
-                const { data } = await api.get<Paciente[]>('/pacientes')
+                const { data } = await api.get<Paciente[]>('/pacientes',
+                    { headers: { "Authorization": `Bearer ${getToken()}` } })
                 setPacientes(data)
             }
         } catch (error) {

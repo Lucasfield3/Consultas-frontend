@@ -55,7 +55,11 @@ export const AuthContextProvider = ({children}: AuthContextProviderProps) =>{
             setFuncionario(data)
             localStorage.setItem('funcionário', JSON.stringify(data))
             storeToken(data.jwtToken)
-            setTimeout(()=>navigate('/home'), 1000)
+            setTimeout(()=>{
+                if(getPayload()){
+                    navigate('/home')
+                }
+            }, 1000)
         } catch (error) {
             console.log(error);
         }
