@@ -1,16 +1,16 @@
-
 import axios from 'axios'
 
 const api = axios.create({
     baseURL:import.meta.env.VITE_BASE_URL,
 })
 
-export const access_token = window.localStorage.getItem('access_token');
+export let access_token = ''
 
-if(access_token){
-    api.defaults.headers.common = {
-        'Authorization': `bearer ${access_token}`,
-    }
-}
+api.interceptors.request.use((config)=>{
+    access_token = localStorage.getItem('access_token')!
+    config.headers!['Authorization'] = 'Bearer ' + access_token
+    
+    return config;
+})
 
 export default api;

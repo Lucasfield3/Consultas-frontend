@@ -49,19 +49,18 @@ export const AuthContextProvider = ({children}: AuthContextProviderProps) =>{
     async function login(credentials: Credentials):Promise<FuncionarioAuthenticated | any>{
 
         setLoading(true)
-        try {
-            const {data} = await api.post<FuncionarioAuthenticated>('/funcionarios/signin', credentials)
+        
+        const {data} = await api.post<FuncionarioAuthenticated>('/funcionarios/signin', credentials)
+        if(data){
+            storeToken(data.jwtToken)
             console.log(data);
             setFuncionario(data)
             localStorage.setItem('funcionário', JSON.stringify(data))
-            storeToken(data.jwtToken)
             setTimeout(()=>{
                 if(getPayload()){
                     navigate('/home')
                 }
             }, 1000)
-        } catch (error) {
-            console.log(error);
         }
         setLoading(false)
     }

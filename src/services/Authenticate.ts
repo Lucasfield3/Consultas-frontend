@@ -1,6 +1,6 @@
 
 import jwt_decode from "jwt-decode";
-import api from "./utils/api";
+import api, { access_token } from "./utils/api";
 
 
 export interface Credentials {
@@ -41,10 +41,19 @@ export async function login(credentials: Credentials):Promise<FuncionarioAuthent
 }
 
 
-export const storeToken = (access_token:string)=>{
-    console.log(access_token)
+export const storeToken = (token:string)=>{
     
-    return window.localStorage.setItem('access_token', access_token)
+    if(token === access_token){
+        console.log('é igual');
+        
+    }else{
+        console.log('diferente');
+        console.log(token)
+        console.log(access_token)
+    
+    }
+
+    return window.localStorage.setItem('access_token', token)
 }
 
 export const getToken = () =>{
