@@ -42,16 +42,6 @@ export async function login(credentials: Credentials):Promise<FuncionarioAuthent
 
 
 export const storeToken = (token:string)=>{
-    
-    if(token === access_token){
-        console.log('é igual');
-        
-    }else{
-        console.log('diferente');
-        console.log(token)
-        console.log(access_token)
-    
-    }
 
     return window.localStorage.setItem('access_token', token)
 }

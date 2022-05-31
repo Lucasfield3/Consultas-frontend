@@ -3,7 +3,6 @@ import { createContext, ReactNode,  useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { Credentials, FuncionarioAuthenticated, getPayload, storeToken } from '../../services/Authenticate'
-import { getFuncionario } from '../../services/Funcionario'
 import api from '../../services/utils/api'
 
 export let DEFAULT_FUNCIONARIO = {
